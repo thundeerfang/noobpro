@@ -7,6 +7,7 @@ import MapView from './components/MapView';
 import IssuesPage from './components/IssuesPage';
 import DepartmentsPage from './components/DepartmentsPage';
 import LoadingScreen from './components/LoadingScreen';
+import ProfileDropdown from './components/ProfileDropdown';
 import { User, Globe, Building2 } from 'lucide-react';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [issues, setIssues] = useState(mockIssues);
   const [departments, setDepartments] = useState(mockDepartments);
+  const [userRole, setUserRole] = useState('admin'); // 'admin' or 'department'
 
   const translations = {
     hi: {
@@ -339,6 +341,7 @@ function App() {
         onLogout={handleLogout}
         language={language}
         translations={t}
+        userRole={userRole}
       />
       
       <div className="flex-1 flex flex-col">
@@ -364,19 +367,12 @@ function App() {
               </button>
               
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
-                </div>
-                <div className="hidden md:block">
-                  <p className="text-sm font-medium text-gray-900">Admin</p>
-                  <p className="text-xs text-gray-500">Profile</p>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="text-sm text-red-600 hover:text-red-800 font-medium transition-colors"
-                >
-                  {t.logout}
-                </button>
+                <ProfileDropdown 
+                  onLogout={handleLogout}
+                  language={language}
+                  translations={t}
+                  userRole={userRole}
+                />
               </div>
             </div>
           </div>

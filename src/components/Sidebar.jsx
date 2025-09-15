@@ -1,7 +1,8 @@
 import React from 'react';
 import { Map, FileText, Building2, ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
+import InfoTab from './InfoTab';
 
-const Sidebar = ({ collapsed, onToggleCollapse, activeTab, onTabChange, onLogout, language = 'hi', translations }) => {
+const Sidebar = ({ collapsed, onToggleCollapse, activeTab, onTabChange, onLogout, language = 'hi', translations, userRole = 'admin' }) => {
   const menuItems = [
     { 
       id: 'map', 
@@ -15,12 +16,12 @@ const Sidebar = ({ collapsed, onToggleCollapse, activeTab, onTabChange, onLogout
       icon: FileText, 
       labelSecondary: translations.issuesSecondary
     },
-    { 
+    ...(userRole === 'admin' ? [{ 
       id: 'departments', 
       label: translations.departments, 
       icon: Building2, 
       labelSecondary: translations.departmentsSecondary
-    }
+    }] : [])
   ];
 
   return (
@@ -73,25 +74,10 @@ const Sidebar = ({ collapsed, onToggleCollapse, activeTab, onTabChange, onLogout
         </div>
       </nav>
 
-      {/* Logout Button */}
-      <div className="p-4 border-t border-gray-200">
-        <button
-          onClick={onLogout}
-          className="w-full flex items-center p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-        >
-          <LogOut size={20} className="flex-shrink-0" />
-          {!collapsed && (
-            <div className="ml-3 text-left">
-              <div className="font-medium">
-                {translations.logout}
-              </div>
-              <div className="text-xs opacity-75">
-                {translations.logoutSecondary}
-              </div>
-            </div>
-          )}
-        </button>
-      </div>
+      {/* Info Tab */}
+      {!collapsed && (
+        <InfoTab language={language} translations={translations} />
+      )}
     </div>
   );
 };
